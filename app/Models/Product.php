@@ -21,8 +21,8 @@ class Product extends Model
         $this->attributes['slug'] = Str::slug($value);
     }
 
-    public function PhotoProducts() : HasMany
+    public function photoProducts() : HasMany
     {
-        
+        return $this->hasMany(PhotoProduct::class);
     }
 }

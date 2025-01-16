@@ -12,7 +12,9 @@ import { Head } from '@inertiajs/vue3';
                 <h1 class="text-xl font-extrabold mb-1 lg:text-5xl">Tambah Produk</h1>
                 <p class="text-base text-base-300 lg:text-lg">Form Tambah produk</p>
             </div>
-            
+            <form action="">
+                
+            </form>
         </div>
     </AuthenticatedLayout>
 </template>

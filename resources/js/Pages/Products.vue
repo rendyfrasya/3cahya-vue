@@ -2,6 +2,9 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
 
+defineProps({
+    products: Array,
+});
 </script>
 
 <template>
@@ -30,9 +33,9 @@ import { Head, Link } from '@inertiajs/vue3';
                     </thead>
                     <tbody>
                         <!-- row 1 -->
-                        <tr class="lg:text-base">
+                        <tr v-for="product in products" :key="product.id" class="lg:text-base">
                             <td>
-                                1
+                                {{ product.id }}
                             </td>
                             <td>
                                 <div class="flex items-center gap-3">
@@ -43,12 +46,12 @@ import { Head, Link } from '@inertiajs/vue3';
                                         </div>
                                     </div>
                                     <div>
-                                        <div class="font-bold">Hart Hagerty</div>
+                                        <div class="font-bold">{{ product.name }}</div>
                                     </div>
                                 </div>
                             </td>
                             <td>
-                                Zemlak, Daniel and Leannon
+                                {{ product.price }}
                             </td>
                             <td>Purple</td>
                             <th>

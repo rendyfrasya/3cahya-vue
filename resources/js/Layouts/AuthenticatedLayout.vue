@@ -49,9 +49,10 @@ const showingNavigationDropdown = ref(false);
             </div>
 
             <!-- Page content here -->
-            <slot>
-                <p>defult</p>
-            </slot>
+            <main>
+                <slot/>
+            </main>
+                
         </div>
         <div class="drawer-side border-r-slate-100 border-[1px]">
             <label for="my-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
