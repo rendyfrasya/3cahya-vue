@@ -12,7 +12,7 @@ import { Head } from '@inertiajs/vue3';
         <div class="flex flex-col mt-4 mx-6">
                 <div class="flex justify-between content-center mb-12">
                     <div class="flex flex-col">
-                        <h1 class="text-xl font-extrabold mb-1 lg:text-5xl">Overveiw</h1>
+                        <h1 class="text-xl font-extrabold mb-1 lg:text-5xl">Overview</h1>
                         <p class="text-base text-base-300 lg:text-lg">Rekapitulasi data penjualan</p>
                     </div>
                     <div class="flex justify-center content-end gap-2 p-2">

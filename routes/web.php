@@ -29,6 +29,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
 
+    Route::get('/settings', function () {
+        return Inertia::render('Settings');
+    })->name('settings');
+
     Route::get('/add-product', function () {
         return Inertia::render('AddProduct');
     })->name('product.add');
