@@ -33,7 +33,7 @@ onMounted(() => {
 					</Link>
 				</div>
 			</div>
-			<div class="flex flex-col">
+			<!-- <div class="flex flex-col">
 				<small class="text-base-300">Settings</small>
 				<div class="flex flex-col gap-1">
 					<Link :href="route('settings')" class="side-link">
@@ -41,7 +41,7 @@ onMounted(() => {
 						Settings
 					</Link>
 				</div>
-			</div>
+			</div> -->
 			<div class="fixed bottom-5 p-4 w-full">
 				<Link :href="route('logout')" method="POST" as="button" class="flex items-center">
 				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">

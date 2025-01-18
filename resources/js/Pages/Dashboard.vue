@@ -7,17 +7,15 @@ import { Head } from '@inertiajs/vue3';
     <Head title="Dashboard" />
 
     <AuthenticatedLayout>
-
-
         <div class="flex flex-col mt-4 mx-6">
-                <div class="flex justify-between content-center mb-12">
+                <div class="flex justify-between items-center mb-12">
                     <div class="flex flex-col">
                         <h1 class="text-xl font-extrabold mb-1 lg:text-5xl">Overview</h1>
                         <p class="text-base text-base-300 lg:text-lg">Rekapitulasi data penjualan</p>
                     </div>
-                    <div class="flex justify-center content-end gap-2 p-2">
-                        <span class="w-6 h-6">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <button class="btn bg-white rounded-lg">
+                        <div class="flex justify-center items-center gap-2 p-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
                                 <g fill="none">
                                     <path stroke="currentColor" stroke-width="1.5"
                                         d="M2 12c0-3.771 0-5.657 1.172-6.828S6.229 4 10 4h4c3.771 0 5.657 0 6.828 1.172S22 8.229 22 12v2c0 3.771 0 5.657-1.172 6.828S17.771 22 14 22h-4c-3.771 0-5.657 0-6.828-1.172S2 17.771 2 14z" />
@@ -27,11 +25,11 @@ import { Head } from '@inertiajs/vue3';
                                         d="M18 17a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m-5 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m-5 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0m0-4a1 1 0 1 1-2 0a1 1 0 0 1 2 0" />
                                 </g>
                             </svg>
-                        </span>
-                        <p class="flex text-xs lg:text-base gap-2">
-                            20 Mei - 26 Mei 2024
-                        </p>
-                    </div>
+                            <p class="text-xs gap-2">
+                                20 Mei - 26 Mei 2024
+                            </p>
+                        </div>
+                    </button>
                 </div>
                 <div class="flex flex-col mb-12">
                     <h1 class="text-[#2E5077] text-base font-bold mb-2 lg:text-lg">Statistik Produk</h1>
