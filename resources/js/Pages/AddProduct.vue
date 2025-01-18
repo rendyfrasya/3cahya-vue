@@ -16,7 +16,7 @@ const addFileInput = () => {
 const handleFileChange = (e, inputId) => {
   const file = e.target.files[0];
   if (file) {
-    formData.photos = file // Menambahkan file ke FormData
+    formData.value.push = file // Menambahkan file ke FormData
   }
 };
 
