@@ -28,10 +28,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 
     Route::get('/products', [ProductController::class, 'index'])->name('product');
-
     Route::get('/add-products', [ProductController::class, 'create'])->name('product.add');
-
-    
     
 });
 
