@@ -29,7 +29,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/products', [ProductController::class, 'index'])->name('product');
     Route::get('/add-products', [ProductController::class, 'create'])->name('product.add');
-    
+    Route::post('/store-products', [ProductController::class, 'store'])->name('product.store');
 });
 
 Route::middleware('auth')->group(function () {

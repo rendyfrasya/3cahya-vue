@@ -13,7 +13,7 @@ const showingNavigationDropdown = ref(false);
 <template>
     <div class="drawer lg:drawer-open">
         <input id="my-drawer" type="checkbox" class="drawer-toggle" />
-        <div class="drawer-content">
+        <div class="drawer-content max-w-full">
             <div class="navbar bg-base-100">
                 <div class="flex-none">
                     <label for="my-drawer" class="btn btn-square btn-ghost drawer-button lg:hidden">

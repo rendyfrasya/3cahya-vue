@@ -32,7 +32,6 @@ defineProps({
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- row 1 -->
                         <tr v-for="product in products" :key="product.id" class="lg:text-base">
                             <td>
                                 {{ product.id }}

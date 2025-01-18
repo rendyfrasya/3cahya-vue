@@ -32,7 +32,14 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'price' => 'required|numeric',
+            'images' => 'nullable|array',
+            'images.*' => 'mimes:jpeg,jpg,png,gif|file|max:2048',
+        ]);
+        dd($request->all());
     }
 
     /**
