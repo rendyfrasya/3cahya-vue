@@ -31,6 +31,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/', [ProductController::class, 'index'])->name('index');
         Route::get('/add', [ProductController::class, 'create'])->name('add');
         Route::post('/store', [ProductController::class, 'store'])->name('store');
+        Route::get('/edit/{product}', [ProductController::class, 'show'])->name('edit');
+        Route::post('/update/{product}', [ProductController::class, 'update'])->name('update');
     });
 });
 

@@ -2,10 +2,10 @@
 
     <Head title="add-product" />
     <AuthenticatedLayout>
-        <div class="flex flex-col mx-6 mb-10">
+        <div class="flex flex-col mx-6 mt-4 mb-10">
             <div class="flex flex-col mb-5">
-                <h1 class="mb-1 text-xl font-extrabold lg:text-5xl">Tambah Produk</h1>
-                <p class="text-base text-base-300 lg:text-lg">Form Tambah produk</p>
+                <h1 class="mb-1 text-xl font-extrabold lg:text-5xl">Edit Produk</h1>
+                <p class="text-base text-base-300 lg:text-lg">Form Edit produk</p>
             </div>
             <form @submit.prevent="submitForm">
                 <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -55,7 +55,7 @@
                     </div>
                     <div v-if="imagePreviews.length" class="flex flex-wrap gap-4 mt-4">
                         <div v-for="(preview, index) in imagePreviews" :key="index" class="relative">
-                            <img :src="preview" alt="Image Preview"
+                            <img :src="preview.src" alt="Image Preview"
                                 class="object-cover w-40 h-40 border-2 border-gray-300 rounded-lg sm:w-48 sm:h-48">
                             <button @click.prevent="removeImage(index)"
                                 class="btn btn-xs btn-error absolute top-1 right-1 mt-1 mr-1 px-[6px] py-2 text-base-100 content-center">
@@ -69,7 +69,7 @@
                 </div>
                 <div class="flex flex-col items-end max-w-full gap-4 mt-5">
                     <button type="submit" class="btn btn-primary max-w-[10rem]">
-                        Tambahkan Produk
+                        Edit Produk
                     </button>
                 </div>
             </form>
@@ -80,12 +80,20 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Inertia } from '@inertiajs/inertia';
 import { Head, useForm } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
 const fileInput = ref(null);
 const fileUploadArea = ref(null);
 const imagePreviews = ref([]);
 const MAX_IMAGE_SIZE = 1 * 1024 * 1024;
+
+const props = defineProps({
+    product_data: {
+        type: Object,
+        default: null
+    },
+});
+
 const triggerFileInput = () => {
     fileInput.value.click();
 };
@@ -115,7 +123,7 @@ const handleDrop = (event) => {
 const previewImage = (file) => {
     const reader = new FileReader();
     reader.onload = (e) => {
-        imagePreviews.value.push(e.target.result);
+        imagePreviews.value.push({ isExist: false, src: e.target.result });
         formData.images.push(file);
     };
     reader.readAsDataURL(file);
@@ -130,19 +138,44 @@ const handleDragLeave = () => {
 };
 
 const removeImage = (index) => {
+    const isExistPhotos = imagePreviews.value[index].isExist;
+    console.log({
+        exist:formData.existing_images,
+        new:formData.images,
+        preview:imagePreviews,
+    })
+    if(isExistPhotos){
+        formData.existing_images.splice(index, 1);
+    }else{
+        formData.images.splice(index, 1);
+    }
     imagePreviews.value.splice(index, 1);
-    formData.images.splice(index, 1);
 };
 
 const formData = useForm({
+    id: '',
     name: '',
     description: '',
     price: '',
-    images: []
+    images: [],
+    existing_images:[],
 })
 
 const submitForm = () => {
-    formData.post('/product/store');
+    formData.post(`/product/update/${props.product_data.id}`);
 };
 
+onMounted(() => {
+    formData.id = props.product_data?.id || formData.id;
+    formData.name = props.product_data?.name || formData.name;
+    formData.description = props.product_data?.description || formData.description;
+    formData.price = props.product_data?.price || formData.price;
+
+    if (props.product_data?.photo_products && props.product_data.photo_products.length > 0) {
+         props.product_data.photo_products.forEach(async (photo) => {
+            imagePreviews.value.push({ isExist: true, src: photo.path });
+            formData.existing_images.push(photo.id);
+        });
+    }
+})
 </script>
