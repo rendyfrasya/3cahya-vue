@@ -3,11 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
 class Product extends Model
 {
+    use SoftDeletes;
+
     protected $fillable = [
         'name',
         'slug',
@@ -24,5 +28,10 @@ class Product extends Model
     public function photoProducts() : HasMany
     {
         return $this->hasMany(PhotoProduct::class);
+    }
+
+    public function itemTransaction() : BelongsTo
+    {
+        return $this->belongsTo(ItemTransaction::class);
     }
 }
