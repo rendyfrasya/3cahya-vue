@@ -78,9 +78,12 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Product $product)
     {
-        //
+        $product_data = $product->load('photoProducts');
+        return Inertia::render('EditProduct',[
+            'product_data' => $product_data
+        ]);
     }
 
     /**
@@ -94,8 +97,16 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Product $product)
     {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'price' => 'required|numeric',
+            'images' => 'nullable|array',
+            'images.*' => 'mimes:jpeg,jpg,png,gif|file|max:2048',
+        ]);
+        dd($product,$request->all());
         //
     }
 

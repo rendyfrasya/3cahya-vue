@@ -4,8 +4,8 @@
     <AuthenticatedLayout>
         <div class="flex flex-col mx-6 mt-4 mb-10">
             <div class="flex flex-col mb-5">
-                <h1 class="mb-1 text-xl font-extrabold lg:text-5xl">Tambah Produk</h1>
-                <p class="text-base text-base-300 lg:text-lg">Form Tambah produk</p>
+                <h1 class="mb-1 text-xl font-extrabold lg:text-5xl">Edit Produk</h1>
+                <p class="text-base text-base-300 lg:text-lg">Form Edit produk</p>
             </div>
             <form @submit.prevent="submitForm">
                 <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -69,7 +69,7 @@
                 </div>
                 <div class="flex flex-col items-end max-w-full gap-4 mt-5">
                     <button type="submit" class="btn btn-primary max-w-[10rem]">
-                        Tambahkan Produk
+                        Editkan Produk
                     </button>
                 </div>
             </form>
@@ -80,11 +80,18 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Inertia } from '@inertiajs/inertia';
 import { Head, useForm } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
 const fileInput = ref(null);
 const fileUploadArea = ref(null);
 const imagePreviews = ref([]);
+
+const props = defineProps({
+    product_data: {
+        type: Object,
+        default: null
+    },
+});
 
 const triggerFileInput = () => {
     fileInput.value.click();
@@ -108,6 +115,7 @@ const previewImage = (file) => {
     const reader = new FileReader();
     reader.onload = (e) => {
         imagePreviews.value.push(e.target.result);
+        console.log(file)
         formData.images.push(file);
     };
     reader.readAsDataURL(file);
@@ -134,7 +142,20 @@ const formData = useForm({
 })
 
 const submitForm = () => {
-    formData.post('/product/store');
+    formData.put(`/product/update/${props.product_data.id}`);
 };
+onMounted(() => {
+    // console.log(product_data);
+    formData.name = props.product_data?.name;
+    formData.description = props.product_data?.description;
+    formData.price = props.product_data?.price;
 
+    // Tambahkan gambar ke preview
+    if (props.product_data?.photo_products && props.product_data.photo_products.length > 0) {
+        props.product_data.photo_products.forEach((photo) => {
+            console.log(photo)
+            imagePreviews.value.push(photo.path); // Pastikan photo adalah URL atau path gambar
+        });
+    }
+})
 </script>
