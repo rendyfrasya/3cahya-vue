@@ -11,11 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
+        //
         Schema::create('photo_products', function (Blueprint $table) {
             $table->id();
-            $table->string('photo');
-            $table->foreignId('products_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('product_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('image_id')->constrained()->cascadeOnDelete();
+            $table->boolean('showable')->default(true);
+            $table->boolean('cover_image')->default(false);
             $table->timestamps();
+            $table->index('showable');
+            $table->index('cover_image');
+            $table->index('created_at');
         });
     }
 
@@ -24,6 +30,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        //
         Schema::dropIfExists('photo_products');
     }
 };

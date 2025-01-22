@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -21,22 +22,16 @@ Route::get('/', function () {
 
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/products', function () {
-        return Inertia::render('Products');
-    })->name('product');
 
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
 
-    Route::get('/settings', function () {
-        return Inertia::render('Settings');
-    })->name('settings');
-
-    Route::get('/add-product', function () {
-        return Inertia::render('AddProduct');
-    })->name('product.add');
-    
+    Route::prefix('product')->name('products.')->group(function(){
+        Route::get('/', [ProductController::class, 'index'])->name('index');
+        Route::get('/add', [ProductController::class, 'create'])->name('add');
+        Route::post('/store', [ProductController::class, 'store'])->name('store');
+    });
 });
 
 Route::middleware('auth')->group(function () {
