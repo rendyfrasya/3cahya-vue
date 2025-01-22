@@ -42,7 +42,7 @@ const props = defineProps({
                                 <div class="flex items-center gap-3">
                                     <div class="avatar">
                                         <div class="w-12 h-12 mask mask-squircle">
-                                            <img :src="product.photo_products[0].path"
+                                            <img  :src="product.photo_products?.[0]?.path || 'https://via.placeholder.com/150'" 
                                                 alt="Avatar Tailwind CSS Component" />
                                         </div>
                                     </div>

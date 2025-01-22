@@ -57,7 +57,7 @@
                         <div v-for="(preview, index) in imagePreviews" :key="index" class="relative">
                             <img :src="preview" alt="Image Preview"
                                 class="object-cover w-40 h-40 border-2 border-gray-300 rounded-lg sm:w-48 sm:h-48">
-                            <button @click="removeImage(index)"
+                            <button @click.prevent="removeImage(index)"
                                 class="btn btn-xs btn-error absolute top-1 right-1 mt-1 mr-1 px-[6px] py-2 text-base-100 content-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 1216 1312">
                                     <path fill="currentColor"
@@ -85,7 +85,7 @@ import { ref } from 'vue';
 const fileInput = ref(null);
 const fileUploadArea = ref(null);
 const imagePreviews = ref([]);
-
+const MAX_IMAGE_SIZE = 1 * 1024 * 1024;
 const triggerFileInput = () => {
     fileInput.value.click();
 };
@@ -93,6 +93,10 @@ const triggerFileInput = () => {
 const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
     files.forEach(file => {
+        if (file.size > MAX_IMAGE_SIZE) {
+            alert(`File "${file.name}" exceeds the 1MB size limit and will not be uploaded.`);
+            return;
+        }
         previewImage(file);
     });
 };
@@ -100,6 +104,10 @@ const handleFileChange = (event) => {
 const handleDrop = (event) => {
     const files = Array.from(event.dataTransfer.files);
     files.forEach(file => {
+        if (file.size > MAX_IMAGE_SIZE) {
+            alert(`File "${file.name}" exceeds the 1MB size limit and will not be uploaded.`);
+            return;
+        }
         previewImage(file);
     });
 };

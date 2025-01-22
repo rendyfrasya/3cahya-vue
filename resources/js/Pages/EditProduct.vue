@@ -55,9 +55,9 @@
                     </div>
                     <div v-if="imagePreviews.length" class="flex flex-wrap gap-4 mt-4">
                         <div v-for="(preview, index) in imagePreviews" :key="index" class="relative">
-                            <img :src="preview" alt="Image Preview"
+                            <img :src="preview.src" alt="Image Preview"
                                 class="object-cover w-40 h-40 border-2 border-gray-300 rounded-lg sm:w-48 sm:h-48">
-                            <button @click="removeImage(index)"
+                            <button @click.prevent="removeImage(index)"
                                 class="btn btn-xs btn-error absolute top-1 right-1 mt-1 mr-1 px-[6px] py-2 text-base-100 content-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 1216 1312">
                                     <path fill="currentColor"
@@ -69,7 +69,7 @@
                 </div>
                 <div class="flex flex-col items-end max-w-full gap-4 mt-5">
                     <button type="submit" class="btn btn-primary max-w-[10rem]">
-                        Editkan Produk
+                        Edit Produk
                     </button>
                 </div>
             </form>
@@ -85,6 +85,7 @@ import { onMounted, ref } from 'vue';
 const fileInput = ref(null);
 const fileUploadArea = ref(null);
 const imagePreviews = ref([]);
+const MAX_IMAGE_SIZE = 1 * 1024 * 1024;
 
 const props = defineProps({
     product_data: {
@@ -100,6 +101,10 @@ const triggerFileInput = () => {
 const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
     files.forEach(file => {
+        if (file.size > MAX_IMAGE_SIZE) {
+            alert(`File "${file.name}" exceeds the 1MB size limit and will not be uploaded.`);
+            return;
+        }
         previewImage(file);
     });
 };
@@ -107,6 +112,10 @@ const handleFileChange = (event) => {
 const handleDrop = (event) => {
     const files = Array.from(event.dataTransfer.files);
     files.forEach(file => {
+        if (file.size > MAX_IMAGE_SIZE) {
+            alert(`File "${file.name}" exceeds the 1MB size limit and will not be uploaded.`);
+            return;
+        }
         previewImage(file);
     });
 };
@@ -114,8 +123,7 @@ const handleDrop = (event) => {
 const previewImage = (file) => {
     const reader = new FileReader();
     reader.onload = (e) => {
-        imagePreviews.value.push(e.target.result);
-        console.log(file)
+        imagePreviews.value.push({ isExist: false, src: e.target.result });
         formData.images.push(file);
     };
     reader.readAsDataURL(file);
@@ -130,31 +138,43 @@ const handleDragLeave = () => {
 };
 
 const removeImage = (index) => {
+    const isExistPhotos = imagePreviews.value[index].isExist;
+    console.log({
+        exist:formData.existing_images,
+        new:formData.images,
+        preview:imagePreviews,
+    })
+    if(isExistPhotos){
+        formData.existing_images.splice(index, 1);
+    }else{
+        formData.images.splice(index, 1);
+    }
     imagePreviews.value.splice(index, 1);
-    formData.images.splice(index, 1);
 };
 
 const formData = useForm({
+    id: '',
     name: '',
     description: '',
     price: '',
-    images: []
+    images: [],
+    existing_images:[],
 })
 
 const submitForm = () => {
-    formData.put(`/product/update/${props.product_data.id}`);
+    formData.post(`/product/update/${props.product_data.id}`);
 };
-onMounted(() => {
-    // console.log(product_data);
-    formData.name = props.product_data?.name;
-    formData.description = props.product_data?.description;
-    formData.price = props.product_data?.price;
 
-    // Tambahkan gambar ke preview
+onMounted(() => {
+    formData.id = props.product_data?.id || formData.id;
+    formData.name = props.product_data?.name || formData.name;
+    formData.description = props.product_data?.description || formData.description;
+    formData.price = props.product_data?.price || formData.price;
+
     if (props.product_data?.photo_products && props.product_data.photo_products.length > 0) {
-        props.product_data.photo_products.forEach((photo) => {
-            console.log(photo)
-            imagePreviews.value.push(photo.path); // Pastikan photo adalah URL atau path gambar
+         props.product_data.photo_products.forEach(async (photo) => {
+            imagePreviews.value.push({ isExist: true, src: photo.path });
+            formData.existing_images.push(photo.id);
         });
     }
 })

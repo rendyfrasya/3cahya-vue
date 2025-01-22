@@ -32,7 +32,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/add', [ProductController::class, 'create'])->name('add');
         Route::post('/store', [ProductController::class, 'store'])->name('store');
         Route::get('/edit/{product}', [ProductController::class, 'show'])->name('edit');
-        Route::put('/update/{product}', [ProductController::class, 'update'])->name('update');
+        Route::post('/update/{product}', [ProductController::class, 'update'])->name('update');
     });
 });
 
