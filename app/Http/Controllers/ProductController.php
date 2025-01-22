@@ -16,7 +16,7 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::with('photoProducts')->get();
-        return Inertia::render('Products', [
+        return Inertia::render('Products/Index', [
             'products' => $products
         ]);
     }
@@ -26,7 +26,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return Inertia::render('AddProduct');
+        return Inertia::render('Products/AddProduct');
     }
 
     /**

@@ -2,7 +2,7 @@
 
     <Head title="add-product" />
     <AuthenticatedLayout>
-        <div class="flex flex-col mx-6 mt-4 mb-10">
+        <div class="flex flex-col mx-6 mb-10">
             <div class="flex flex-col mb-5">
                 <h1 class="mb-1 text-xl font-extrabold lg:text-5xl">Tambah Produk</h1>
                 <p class="text-base text-base-300 lg:text-lg">Form Tambah produk</p>
