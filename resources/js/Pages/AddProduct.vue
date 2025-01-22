@@ -135,7 +135,7 @@ const formData = useForm({
 })
 
 const submitForm = () => {
-    formData.post('/store-products');
+    formData.post('/product/store');
 };
 
 </script>

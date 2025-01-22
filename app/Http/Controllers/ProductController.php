@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Image;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class ProductController extends Controller
@@ -13,7 +15,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::all();
+        $products = Product::with('photoProducts')->get();
         return Inertia::render('Products', [
             'products' => $products
         ]);
@@ -32,14 +34,45 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'price' => 'required|numeric',
             'images' => 'nullable|array',
             'images.*' => 'mimes:jpeg,jpg,png,gif|file|max:2048',
         ]);
-        dd($request->all());
+
+        try {
+            DB::beginTransaction();
+            $products = new Product();
+            $products->name = $request->name;
+            $products->description = $request->description;
+            $products->price = $request->price;
+            $products->save();
+            if($request->has('images')){
+                if($request->hasFile('images')){
+                    $image_file = $request->images;
+                    $savedImage = collect();
+                    foreach($image_file as $image){
+                        $images = Image::advancedSave($image, [
+                            'name'=>'product_image_' . $products->id . $image->getClientOriginalName(),
+                        ]);
+                        $savedImage->push($images);
+                    }
+                    if($savedImage->isNotEmpty()){
+                        foreach ($savedImage as $image) {
+                            $products->photoProducts()->attach($image->id, ['showable' => 1]);
+                        }
+                    }
+                }
+            }
+            DB::commit();
+            return redirect()->route('products.index')->with('success', 'Operation completed successfully!');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+            return redirect()->back()->withErrors($th->getMessage())->withInput($request->input());
+        }
     }
 
     /**

@@ -2,9 +2,10 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
 
-defineProps({
+const props = defineProps({
     products: Array,
 });
+console.log(props.products);
 </script>
 
 <template>
@@ -16,7 +17,7 @@ defineProps({
                 <h1 class="text-xl font-extrabold mb-1 lg:text-5xl">Produk</h1>
                 <p class="text-base text-base-300 lg:text-lg">Data semua produk</p>
             </div>
-            <Link :href="route('product.add')" class="btn bg-primary w-36 text-xs text-white lg:text-sm lg:w-40 mb-2">
+            <Link :href="route('products.add')" class="btn bg-primary w-36 text-xs text-white lg:text-sm lg:w-40 mb-2">
             + Tambah Product
             </Link>
             <div class="overflow-x-auto">
@@ -34,13 +35,13 @@ defineProps({
                     <tbody>
                         <tr v-for="product in products" :key="product.id" class="lg:text-base">
                             <td>
-                                {{ product.id }}
+                                {{ product.id}}
                             </td>
                             <td>
                                 <div class="flex items-center gap-3">
                                     <div class="avatar">
                                         <div class="mask mask-squircle h-12 w-12">
-                                            <img src="https://img.daisyui.com/images/profile/demo/2@94.webp"
+                                            <img :src="product.photo_products[0].path"
                                                 alt="Avatar Tailwind CSS Component" />
                                         </div>
                                     </div>

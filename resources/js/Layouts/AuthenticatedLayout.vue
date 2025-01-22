@@ -72,7 +72,7 @@ const showingNavigationDropdown = ref(false);
                     Dashboard
                     </Link>
                     <li>
-                        <Link :href="route('product')" class="flex gap-2 text-sm lg:text-base">
+                        <Link :href="route('products.index')" class="flex gap-2 text-sm lg:text-base">
                         <span>
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512">
                                 <path fill="currentColor" fill-rule="evenodd"

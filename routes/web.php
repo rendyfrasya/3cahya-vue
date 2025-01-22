@@ -27,9 +27,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
 
-    Route::get('/products', [ProductController::class, 'index'])->name('product');
-    Route::get('/add-products', [ProductController::class, 'create'])->name('product.add');
-    Route::post('/store-products', [ProductController::class, 'store'])->name('product.store');
+    Route::prefix('product')->name('products.')->group(function(){
+        Route::get('/', [ProductController::class, 'index'])->name('index');
+        Route::get('/add', [ProductController::class, 'create'])->name('add');
+        Route::post('/store', [ProductController::class, 'store'])->name('store');
+    });
 });
 
 Route::middleware('auth')->group(function () {
