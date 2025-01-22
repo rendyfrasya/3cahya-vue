@@ -1,23 +1,24 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link, useForm } from '@inertiajs/vue3';
 
 const props = defineProps({
     products: Array,
 });
-console.log(props.products);
+
+
 </script>
 
 <template>
 
     <Head title="Products" />
     <AuthenticatedLayout>
-        <div class="flex flex-col mt-4 mx-6">
+        <div class="flex flex-col mx-6 mt-4">
             <div class="flex flex-col mb-12">
-                <h1 class="text-xl font-extrabold mb-1 lg:text-5xl">Produk</h1>
+                <h1 class="mb-1 text-xl font-extrabold lg:text-5xl">Produk</h1>
                 <p class="text-base text-base-300 lg:text-lg">Data semua produk</p>
             </div>
-            <Link :href="route('products.add')" class="btn bg-primary w-36 text-xs text-white lg:text-sm lg:w-40 mb-2">
+            <Link :href="route('products.add')" class="mb-2 text-xs text-white btn bg-primary w-36 lg:text-sm lg:w-40">
             + Tambah Product
             </Link>
             <div class="overflow-x-auto">
@@ -35,13 +36,13 @@ console.log(props.products);
                     <tbody>
                         <tr v-for="product in products" :key="product.id" class="lg:text-base">
                             <td>
-                                {{ product.id}}
+                                {{ product.id }}
                             </td>
                             <td>
                                 <div class="flex items-center gap-3">
                                     <div class="avatar">
-                                        <div class="mask mask-squircle h-12 w-12">
-                                            <img :src="product.photo_products[0].path"
+                                        <div class="w-12 h-12 mask mask-squircle">
+                                            <img  :src="product.photo_products?.[0]?.path || 'https://via.placeholder.com/150'" 
                                                 alt="Avatar Tailwind CSS Component" />
                                         </div>
                                     </div>
@@ -55,7 +56,10 @@ console.log(props.products);
                             </td>
                             <td>Purple</td>
                             <th>
-                                <button class="btn btn-ghost btn-sm">details</button>
+                                <Link :href="route('products.edit', { product: product.id })" as="button"
+                                    class="btn btn-sm btn-error">
+                                details
+                                </Link>
                             </th>
                         </tr>
                     </tbody>
