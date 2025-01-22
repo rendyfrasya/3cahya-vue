@@ -25,9 +25,8 @@ class Product extends Model
         $this->attributes['slug'] = Str::slug($value);
     }
 
-    public function photoProducts() : HasMany
-    {
-        return $this->hasMany(PhotoProduct::class);
+    public function photoProducts(){
+        return $this->belongsToMany(Image::class, 'photo_products')->withTimestamps()->withPivot(['showable', 'cover_image']);
     }
 
     public function itemTransaction() : BelongsTo
